@@ -92,13 +92,13 @@ static int parse_posargs(int posargc, char *posargv[], struct MyOpts *opts)
       SVAL(posargv[i]);
       switch(opts->type){
          case INTEGER:
-            if(sscanf(posargv[i], "%d", &(opts->int_elements[i])) != 1){
+            if(sscanf(posargv[i], "%d", &(opts->int_elements[i-1])) != 1){
                return -1;
             }
             IVAL(opts->int_elements[i]);
             break;
          case FLOATING:
-            if(sscanf(posargv[i], "%f", &opts->float_elements[i]) != 1){
+            if(sscanf(posargv[i], "%f", &opts->float_elements[i-1]) != 1){
                return -1;
             }
             break;
