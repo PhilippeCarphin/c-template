@@ -1,0 +1,9 @@
+First define your command line API
+
+Second, make the struct in api.h
+
+Third, Complete the TODO's in options.c
+
+Fourth Implement your API in api.c and add source files.
+
+NOTE: You do not touch main.c, options.h
