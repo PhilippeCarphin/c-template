@@ -11,4 +11,6 @@ struct MyOpts {
    int nb_elements;
    char **elements;
 };
+#define TCL_API_NAME "my_api"
+#define TCL_CMD_NAME "tcl_cmd_name"
 #endif
