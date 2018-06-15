@@ -28,14 +28,12 @@ static struct option options[] = {
       // TODO : COMPLETE THIS
       // long name | has_args | flag | short name
 		{ "help",         0,        0,      'h'},
-		{ "int_value",    1,        0,      'i'},
-		{ "path",         1,        0,      'p'},
-		{ "float",        1,        0,      'f'},
+		{ "type",         1,        0,      't'},
 		{0,0,0,0}
 	};
 
 // TODO : COMPLETE THIS (a colon after means it takes an argument)
-static char *short_opts = "hi:p:f:";
+static char *short_opts = "ht:";
 
 /*******************************************************************************
  * This function is driven by the parse_opts function that uses getopt_long.
@@ -49,15 +47,14 @@ static int parse_option(int opt, char *optarg, struct MyOpts *opts)
       case 'h':
          show_usage();
          break;
-      case 'p':
-         opts->a_path = strdup(optarg);
-         break;
-      case 'i':
-         opts->a_flag = 1; // true
-         break;
-      case 'f':
-         if(sscanf(optarg, "%f", &(opts->float_param)) != 1)
+      case 't':
+         if(strcmp(optarg, "float") == 0){
+            opts->type = FLOATING;
+         } else if (strcmp(optarg, "int") == 0){
+            opts->type = INTEGER;
+         } else {
             return -1;
+         }
          break;
       default:
          fprintf(stderr, "Unknown option %c (%d)\n", opt, opt);
@@ -97,8 +94,8 @@ static int command(const char *command_name, enum Command *cmd)
 {
    struct NameValue {const char *name; const int value;};// Library
    static struct NameValue cmd_value [] = {
-      {"first_name", FIRST_CMD,},
-      {"second_name", SECOND_CMD},
+      {"sum", SUM},
+      {"product", PRODUCT},
       {NULL,0}
    };
    for(struct NameValue *nv = cmd_value; nv->name != NULL; nv++){

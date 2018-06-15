@@ -22,7 +22,10 @@ vars:
 	@echo "obj = $(obj)"
 
 test: $(trg)
-	./$(trg) first_name -p path/to/file -f 2.342
+	./$(trg) sum 1 2 -t float 3 4
+	./$(trg) sum 1 2 -t int 3 4
+	./$(trg) product 1 2 -t float 3 4
+	./$(trg) product 1 2 -t int 3 4
 
 
 .PHONY:vars clean
