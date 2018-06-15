@@ -85,8 +85,28 @@ static int parse_posargs(int posargc, char *posargv[], struct MyOpts *opts)
       return -1;
    }
 
-   opts->elements = posargv+1;
-   opts->nb_elements = posargc-1;
+   opts->nb_elements = posargc - 1;
+   opts->float_elements = malloc((posargc - 1) * sizeof(float));
+   opts->int_elements = malloc((posargc - 1) * sizeof(int));
+   for(int i = 1; i < posargc; ++i){
+      SVAL(posargv[i]);
+      switch(opts->type){
+         case INTEGER:
+            if(sscanf(posargv[i], "%d", &(opts->int_elements[i])) != 1){
+               return -1;
+            }
+            IVAL(opts->int_elements[i]);
+            break;
+         case FLOATING:
+            if(sscanf(posargv[i], "%f", &opts->float_elements[i]) != 1){
+               return -1;
+            }
+            break;
+         default:
+            return -1;
+      }
+   }
+
    // Maybe do something with the other positionnal arguments
    return 0;
 }

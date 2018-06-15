@@ -9,7 +9,8 @@ struct MyOpts {
    char *a_path;
    enum Type type;
    int nb_elements;
-   char **elements;
+   float *float_elements;
+   int *int_elements;
 };
 #define TCL_API_NAME "my_api"
 #define TCL_CMD_NAME "tcl_cmd_name"

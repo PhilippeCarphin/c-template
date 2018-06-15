@@ -1,3 +1,5 @@
+#define PHIL_DEBUG
+#include "debug.h"
 #include <stdio.h>
 #include "myapi.h"
 #include "options.h"
@@ -32,11 +34,8 @@ int sum(struct MyOpts *opts){
       case INTEGER:{
          int sum = 0;
          for(int i = 0; i < opts->nb_elements; i++){
-            int j;
-            if(sscanf(opts->elements[i], "%d", &j) != 1){
-               return -1;
-            }
-            sum += j;
+            sum += opts->int_elements[i];
+            IVAL(sum);
          }
          printf("SUM IS %d\n", sum);
                    }
@@ -44,11 +43,7 @@ int sum(struct MyOpts *opts){
       case FLOATING:{
          float sum = 0;
          for(int i = 0; i < opts->nb_elements; i++){
-            float f;
-            if(sscanf(opts->elements[i], "%f", &f) != 1){
-               return -1;
-            }
-            sum += f;
+            sum += opts->float_elements[i];
          }
          printf("SUM IS %f\n", sum);
                     }
@@ -59,30 +54,22 @@ int sum(struct MyOpts *opts){
 };
 
 int product(struct MyOpts *opts){
+   int int_product = 1;
+   float float_product = 1;
    switch(opts->type){
-      case INTEGER:{
-         int product = 1;
+      case INTEGER:
          for(int i = 0; i < opts->nb_elements; i++){
-            int j;
-            if(sscanf(opts->elements[i], "%d", &j) != 1){
-               return -1;
-            }
-            product *= j;
+            int_product *= opts->int_elements[i];
+            IVAL(opts->int_elements[i]);
+            IVAL(int_product);
          }
-         printf("PRODUCT IS %d\n", product);
-                   }
+         printf("PRODUCT IS %d\n", int_product);
          return 0;
-      case FLOATING:{
-         float product = 1;
+      case FLOATING:
          for(int i = 0; i < opts->nb_elements; i++){
-            float f;
-            if(sscanf(opts->elements[i], "%f", &f) != 1){
-               return -1;
-            }
-            product *= f;
+            float_product *= opts->float_elements[i];
          }
-         printf("PRODUCT IS %f\n", product);
-                    }
+         printf("PRODUCT IS %f\n", float_product);
          return 0;
       default:
          return -1;
