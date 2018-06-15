@@ -89,13 +89,11 @@ static int parse_posargs(int posargc, char *posargv[], struct MyOpts *opts)
    opts->float_elements = malloc((posargc - 1) * sizeof(float));
    opts->int_elements = malloc((posargc - 1) * sizeof(int));
    for(int i = 1; i < posargc; ++i){
-      SVAL(posargv[i]);
       switch(opts->type){
          case INTEGER:
             if(sscanf(posargv[i], "%d", &(opts->int_elements[i-1])) != 1){
                return -1;
             }
-            IVAL(opts->int_elements[i]);
             break;
          case FLOATING:
             if(sscanf(posargv[i], "%f", &opts->float_elements[i-1]) != 1){
@@ -140,9 +138,15 @@ int parse_args(int argc, char *argv[], struct MyOpts **opts)
    *opts = malloc(sizeof **opts);
    int posargc;
    char **posargv;
-   if(parse_opts(argc, argv, *opts, &posargc, &posargv)){ return -1; }
-   if(parse_posargs(posargc, posargv, *opts)){ return -1; }
-   return 0;
+   int retval;
+   if((retval = parse_opts(argc, argv, *opts, &posargc, &posargv))){
+      DBG_PRINT("Error parsing options\n");
+   }
+
+   if((retval = parse_posargs(posargc, posargv, *opts))){
+      DBG_PRINT("Error in parsing positionnal arguments\n");
+   }
+   return retval;
 }
 static int parse_opts(int argc, char *argv[], struct MyOpts *opts, int *posargc, char ***posargv)
 {

@@ -1,4 +1,5 @@
 #define PHIL_DEBUG
+
 #include "debug.h"
 #include <stdio.h>
 #include "myapi.h"
@@ -19,34 +20,31 @@ int sum_float(struct MyOpts *opts){return -1;}
 int my_main(struct MyOpts *opts){
    //...
    (void) opts;
+   int retval;
    switch(opts->cmd){
       case SUM:
          return sum(opts);
       case PRODUCT:
          return product(opts);
    }
-
-   return 0;
+   return retval;
 }
 
 int sum(struct MyOpts *opts){
+   int int_sum = 0;
+   float float_sum = 0;
    switch(opts->type){
-      case INTEGER:{
-         int sum = 0;
+      case INTEGER:
          for(int i = 0; i < opts->nb_elements; i++){
-            sum += opts->int_elements[i];
-            IVAL(sum);
+            int_sum += opts->int_elements[i];
          }
-         printf("SUM IS %d\n", sum);
-                   }
+         printf("SUM IS %d\n", int_sum);
          return 0;
-      case FLOATING:{
-         float sum = 0;
+      case FLOATING:
          for(int i = 0; i < opts->nb_elements; i++){
-            sum += opts->float_elements[i];
+            float_sum += opts->float_elements[i];
          }
-         printf("SUM IS %f\n", sum);
-                    }
+         printf("SUM IS %f\n", float_sum);
          return 0;
       default:
          return -1;
@@ -60,8 +58,6 @@ int product(struct MyOpts *opts){
       case INTEGER:
          for(int i = 0; i < opts->nb_elements; i++){
             int_product *= opts->int_elements[i];
-            IVAL(opts->int_elements[i]);
-            IVAL(int_product);
          }
          printf("PRODUCT IS %d\n", int_product);
          return 0;
