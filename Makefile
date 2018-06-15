@@ -24,8 +24,8 @@ libmyapi.dylib: $(shared_obj)
 #
 # TCL-shared library with options.o, myapi.o, tcl_extension.o
 libtcl:libtclmyapi.dylib
-libtclmyapi.dylib:tcl_extension.o lib
-	gcc -dynamiclib -DUSE_TCL_STUBS $< -o $@ -L/Library/Frameworks/Tcl.framework -ltclstub8.6 -l tclstub8.6
+libtclmyapi.dylib:tcl_extension.o $(shared_obj)
+	gcc -dynamiclib -DUSE_TCL_STUBS $< -o $@ -L/Library/Frameworks/Tcl.framework -l tclstub8.5
 
 #
 # Python shared library
