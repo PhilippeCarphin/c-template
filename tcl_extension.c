@@ -41,7 +41,7 @@ static int tcl_extension_callback(ClientData cdata, Tcl_Interp *interp, int objc
    return my_main(opts);
 }
 
-int TclMyApi_Init(Tcl_Interp *interp)
+int Myapi_Init(Tcl_Interp *interp)
 {
     FUNCBEGIN
     if(Tcl_InitStubs(interp, TCL_VERSION, 0) == NULL){
