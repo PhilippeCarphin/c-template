@@ -1,6 +1,6 @@
 /* And a main function whose job it is to get the command line argumnets, turn
  * them into a struct MyOpts and dispatch to the right command*/
-#include "api.h"
+#include "myapi.h"
 #include "options.h"
 int main(int argc, char * argv[])
 {
