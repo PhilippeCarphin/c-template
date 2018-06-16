@@ -1,6 +1,30 @@
-#include "Python.h"
+#include "options.h"
+#include "myapi.h"
+#include <Python.h>
 
 #if PY_MAJOR_VERSION >= 3
+
+static PyObject *pymain(PyObject* self, PyObject* args)
+{
+	Py_ssize_t argc = PyTuple_Size(args);
+
+	char *argv[argc];
+	for(int i = 0; i < argc; ++i){
+      PyObject *bytes = PyUnicode_AsEncodedString(PyTuple_GetItem(args, i), "UTF-8", "strict");
+		argv[i] = PyBytes_AS_STRING(bytes);
+	}
+
+	struct MyOpts *opts;
+	if(parse_args(argc, argv, &opts)){
+		return self;
+	}
+
+	if(my_main(opts)){
+		return self;
+	}
+
+	return self;
+}
 
 struct module_state {
     PyObject *error;
@@ -18,6 +42,7 @@ error_out(PyObject *m) {
 
 static PyMethodDef myextension_methods[] = {
     {"error_out", (PyCFunction)error_out, METH_NOARGS, NULL},
+    {"api_cmd", (PyCFunction)pymain, METH_VARARGS, NULL},
     {NULL, NULL}
 };
 
