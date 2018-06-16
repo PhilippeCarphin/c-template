@@ -156,8 +156,9 @@ int parse_args(int argc, char *argv[], struct MyOpts **opts)
 }
 static int parse_opts(int argc, char *argv[], struct MyOpts *opts, int *posargc, char ***posargv)
 {
-	int opt;
-	int index;
+	int opt = -1;
+	int index = 0;
+   optind = 0;
 	while(( opt = getopt_long(argc, argv, short_opts, options, &index)) != -1 ){
       if(parse_option(opt, optarg, opts)){
          fprintf(stderr, "error parsing argument %s of option %c at index %d\n", optarg, opt, index);
