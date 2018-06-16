@@ -24,7 +24,7 @@ TCL_LIBS =
 TCL_CFLAGS = $(CFLAGS) -DUSE_TCL_STUBS
 
 # OS SPECIFIC STUFF
-ifeq ($(OS), Darwin)
+ifeq ($(shell uname), Darwin)
 	lib_extension = dylib
 	LDFLAGS += -dynamiclib
 	TCL_LIBS += -L/Library/Frameworks/Tcl.framework -l tclstub8.5
