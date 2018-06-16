@@ -1,3 +1,6 @@
 exec
 *.o
 *.d
+*.so
+*.dylib
+*.dSYM
