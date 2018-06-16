@@ -17,17 +17,16 @@ int product_int(struct MyOpts *opts){return -1;}
 int sum(struct MyOpts *opts);
 int sum_int(struct MyOpts *opts){return -1;}
 int sum_float(struct MyOpts *opts){return -1;}
-int my_main(struct MyOpts *opts){
-   //...
-   (void) opts;
-   int retval;
+int my_main(struct MyOpts *opts)
+{
    switch(opts->cmd){
       case SUM:
          return sum(opts);
       case PRODUCT:
          return product(opts);
+      default:
+	 return -1;
    }
-   return retval;
 }
 
 int sum(struct MyOpts *opts){

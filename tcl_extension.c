@@ -1,4 +1,3 @@
-#ifdef TCL
 #include <tcl.h>
 #include "myapi.h"
 #include "options.h"
@@ -41,7 +40,7 @@ static int tcl_extension_callback(ClientData cdata, Tcl_Interp *interp, int objc
    return my_main(opts);
 }
 
-int Myapi_Init(Tcl_Interp *interp)
+int Tclmyapi_Init(Tcl_Interp *interp)
 {
     FUNCBEGIN
     if(Tcl_InitStubs(interp, TCL_VERSION, 0) == NULL){
@@ -57,4 +56,3 @@ int Myapi_Init(Tcl_Interp *interp)
     FUNCEND
     return TCL_OK;
 }
-#endif

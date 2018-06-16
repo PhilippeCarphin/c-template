@@ -1,36 +1,62 @@
-trg=exec
-
+# DIRECTORY STRUCTURE
 src_dir=.
 build_dir=.
 inc_dir=.
 
+# FILENAME LISTS
 src = $(wildcard $(src_dir)/*.c)
 obj = $(subst $(src_dir),$(build_dir),$(src:.c=.o))
 main_obj = $(src_dir)/main.o $(src_dir)/tcl_extension.o
 shared_obj = $(filter-out $(main_obj),$(obj))
-trg=exec
 
-CFLAGS = -g -Wall -MMD -I $(inc_dir) 
+# TARGETS
+trg=exec
+shared_lib = libmyapi.$(lib_extension)
+tcl_shared_lib=libtclmyapi.$(lib_extension)
+
+# COMPILATION AND LINKING FLAGS
+CFLAGS= -g -Wall -MMD -I $(inc_dir) -fPIC -std=c11 -Wno-unused-function
+LDLIBS=-L$(tcl_lib) -l tclstub8.6
+
+# TCL shared library variables
+TCL_LDFLAGS = $(LDFLAGS)
+TCL_LIBS =
+TCL_CFLAGS = $(CFLAGS) -DUSE_TCL_STUBS
+
+# OS SPECIFIC STUFF
+ifeq ($(OS), Darwin)
+	lib_extension = dylib
+	LDFLAGS += -dynamiclib
+	TCL_LIBS += -L/Library/Frameworks/Tcl.framework -l tclstub8.5
+else
+	lib_extension = so
+	LDFLAGS += -shared
+	TCL_LIBS += -L /usr/lib/x86_64-linux-gnu/ -l tclstub8.6
+	TCL_CFLAGS += -I /usr/include/tcl8.6
+endif
+
 
 all: lib
-$(trg): $(obj)
-	gcc -o $(trg) $(obj)
+$(trg): main.c $(shared_obj)
+	gcc -o $(trg) $< $(shared_obj)
+
 $(obj): $(build_dir)/%.o : $(src_dir)/%.c
 	gcc $(CFLAGS) -c $< -o $@
+
 # C-shared library with options.o and myapi.o
-lib:libmyapi.dylib
-libmyapi.dylib: $(shared_obj)
-	gcc -dynamiclib -o $@ $^ 
+lib:$(shared_lib)
+$(shared_lib): $(shared_obj)
+	gcc $(LDFLAGS) -o $@ $^
 #
 # TCL-shared library with options.o, myapi.o, tcl_extension.o
-libtcl:libtclmyapi.dylib
-libtclmyapi.dylib:tcl_extension.o $(shared_obj)
-	gcc -dynamiclib -DUSE_TCL_STUBS $< -o $@ -L/Library/Frameworks/Tcl.framework -l tclstub8.5
+libtcl:$(tcl_shared_lib)
+$(tcl_shared_lib):tcl_extension.c $(shared_obj)
+	gcc $(TCL_LDFLAGS) $(TCL_CFLAGS) $^ $(TCL_LIBS) -o $@
 
 #
 # Python shared library
 clean:
-	$(RM) exec $(obj) $(obj:.o=.d)
+	$(RM) exec $(obj) $(obj:.o=.d) *.$(lib_extension)
 vars:
 	@echo "src = $(src)"
 	@echo "obj = $(obj)"
