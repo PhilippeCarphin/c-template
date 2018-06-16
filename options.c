@@ -83,7 +83,7 @@ static int parse_posargs(int posargc, char *posargv[], struct MyOpts *opts)
 
    if(command(posargv[0], &(opts)->cmd)){
       DBG_PRINT("==============================\n");
-      DBG_PRINT("Unknown command %s\n", posargv[1]);
+      DBG_PRINT("Unknown command %s\n", posargv[0]);
       return -1;
    }
 
