@@ -1,5 +1,7 @@
 #include "Python.h"
 
+#if PY_MAJOR_VERSION >= 3
+
 struct module_state {
     PyObject *error;
 };
@@ -61,3 +63,6 @@ PyInit_myextension(void)
 
     return module;
 }
+#else
+#warning "THIS SHOULD ONLY BE USED FOR PYTHON 3"
+#endif
