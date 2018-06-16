@@ -76,12 +76,14 @@ static int command(const char *command_name, enum Command *cmd);
 static int parse_posargs(int posargc, char *posargv[], struct MyOpts *opts)
 {
    if(posargc < 1){
-      fprintf(stderr, "Error: No subcommand\n");
+      DBG_PRINT("==============================\n");
+      DBG_PRINT("Error: No subcommand\n");
       return -1;
    }
 
    if(command(posargv[0], &(opts)->cmd)){
-      fprintf(stderr, "Unknown command %s\n", posargv[1]);
+      DBG_PRINT("==============================\n");
+      DBG_PRINT("Unknown command %s\n", posargv[1]);
       return -1;
    }
 
@@ -92,11 +94,15 @@ static int parse_posargs(int posargc, char *posargv[], struct MyOpts *opts)
       switch(opts->type){
          case INTEGER:
             if(sscanf(posargv[i], "%d", &(opts->int_elements[i-1])) != 1){
+               DBG_PRINT("==============================\n");
+	       DBG_PRINT("sscanf failed\n");
                return -1;
             }
             break;
          case FLOATING:
             if(sscanf(posargv[i], "%f", &opts->float_elements[i-1]) != 1){
+               DBG_PRINT("==============================\n");
+	       DBG_PRINT("sscanf failed\n");
                return -1;
             }
             break;

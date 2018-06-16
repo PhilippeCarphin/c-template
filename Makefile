@@ -36,7 +36,7 @@ else
 endif
 
 
-all: lib
+all: lib libtcl exec
 $(trg): main.c $(shared_obj)
 	gcc -o $(trg) $< $(shared_obj)
 
