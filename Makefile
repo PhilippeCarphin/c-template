@@ -51,7 +51,7 @@ $(shared_lib): $(shared_obj)
 # TCL-shared library with options.o, myapi.o, tcl_extension.o
 libtcl:$(tcl_shared_lib)
 $(tcl_shared_lib):tcl_extension.c $(shared_obj)
-	gcc $(TCL_LDFLAGS) $(TCL_CFLAGS) $^ $(TCL_LIBS) -o $@
+	gcc $(TCL_LDFLAGS) $(TCL_CFLAGS) $< $(shared_obj) $(TCL_LIBS) -o $@
 
 #
 # Python shared library
