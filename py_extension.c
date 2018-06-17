@@ -6,11 +6,12 @@
 
 static PyObject *pymain(PyObject* self, PyObject* args)
 {
-	Py_ssize_t argc = PyTuple_Size(args);
+	Py_ssize_t argc = PyTuple_Size(args) + 1;
 
 	char *argv[argc];
-	for(int i = 0; i < argc; ++i){
-      PyObject *bytes = PyUnicode_AsEncodedString(PyTuple_GetItem(args, i), "UTF-8", "strict");
+   argv[0] = __func__;
+	for(int i = 1; i < argc; ++i){
+      PyObject *bytes = PyUnicode_AsEncodedString(PyTuple_GetItem(args, i-1), "UTF-8", "strict");
 		argv[i] = PyBytes_AS_STRING(bytes);
 	}
 
