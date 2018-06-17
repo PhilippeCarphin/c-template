@@ -1,5 +1,5 @@
-#ifndef _MY_MAIN_H
-#define _MY_MAIN_H
+#ifndef _MY_API_H_
+#define _MY_API_H_
 struct MyOpts;
 int my_main(struct MyOpts *opts);
 enum Command { SUM, PRODUCT};
@@ -14,4 +14,4 @@ struct MyOpts {
 };
 #define TCL_API_NAME "my_api"
 #define TCL_CMD_NAME "api_cmd"
-#endif
+#endif // _MY_API_H_

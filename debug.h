@@ -1,3 +1,5 @@
+#ifndef _DEBUG_H_
+#define _DEBUG_H_
 /*
  * A cool file with some debugging macros to print the values of variables
  * without having to write a debug message.
@@ -44,3 +46,5 @@
 #define FUNCBEGIN      DBG_PRINT("BEGIN\n");
 
 #define FUNCEND        DBG_PRINT("END\n");
+
+#endif // #ifndef _DEBUG_H_
