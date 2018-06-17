@@ -1,6 +1,6 @@
 from distutils.core import setup, Extension
 
-module = Extension('myModule', sources=['py_extension.c'])
+module = Extension('myModule', sources=['options.c', 'myapi.c', 'py_extension.c'])
 
 setup(name='PackageName',
         version='1.0',
