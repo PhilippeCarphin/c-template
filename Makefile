@@ -53,6 +53,10 @@ libtcl:$(tcl_shared_lib)
 $(tcl_shared_lib):tcl_extension.c $(shared_obj)
 	gcc $(TCL_LDFLAGS) $(TCL_CFLAGS) $< $(shared_obj) $(TCL_LIBS) -o $@
 
+pylib:$(src) setup.py
+	rm -rf build
+	python3 setup.py install --user
+
 #
 # Python shared library
 clean:
