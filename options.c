@@ -57,8 +57,7 @@ static int parse_option(int opt, char *optarg, struct MyOpts *opts)
          }
          break;
       default:
-         fprintf(stderr, "Unknown option %c (%d)\n", opt, opt);
-         show_usage();
+         DBG_PRINT("Unknown option %c (%d)\n", opt, opt);
          return -1;
          break;
    }
@@ -117,17 +116,25 @@ static int parse_posargs(int posargc, char *posargv[], struct MyOpts *opts)
 static int command(const char *command_name, enum Command *cmd)
 {
    struct NameValue {const char *name; const int value;};// Library
-   static struct NameValue cmd_value [] = {
+   static struct NameValue cmd_lookup [] = {
       {"sum", SUM},
       {"product", PRODUCT},
       {NULL,0}
    };
-   for(struct NameValue *nv = cmd_value; nv->name != NULL; nv++){
+   for(struct NameValue *nv = cmd_lookup; nv->name != NULL; nv++){
       if(strcmp(command_name, nv->name) == 0){
          *cmd = nv->value;
          return 0;
       }
    }
+   DBG_PRINT("==============================\n");
+   DBG_PRINT("Unknown command_name %s - possible values are : ", command_name);
+#ifdef PHIL_DEBUG
+   for(struct NameValue *nv = cmd_lookup; nv->name != NULL; nv++){
+      fprintf(stderr, "%s, ", nv->name);
+   }
+   putchar('\n');
+#endif
    return -1;
 }
 
@@ -147,12 +154,17 @@ int parse_args(int argc, char *argv[], struct MyOpts **opts)
    int retval;
    if((retval = parse_opts(argc, argv, *opts, &posargc, &posargv))){
       DBG_PRINT("Error parsing options\n");
+      goto err;
    }
 
    if((retval = parse_posargs(posargc, posargv, *opts))){
       DBG_PRINT("Error in parsing positionnal arguments\n");
+      goto err;
    }
-   return retval;
+   return 0;
+err:
+	show_usage();
+	return -1;
 }
 static int parse_opts(int argc, char *argv[], struct MyOpts *opts, int *posargc, char ***posargv)
 {
@@ -161,7 +173,8 @@ static int parse_opts(int argc, char *argv[], struct MyOpts *opts, int *posargc,
    optind = 0;
 	while(( opt = getopt_long(argc, argv, short_opts, options, &index)) != -1 ){
       if(parse_option(opt, optarg, opts)){
-         fprintf(stderr, "error parsing argument %s of option %c at index %d\n", optarg, opt, index);
+         DBG_PRINT("error parsing argument %s of option %c at index %d\n", optarg, opt, index);
+	 return -1;
       }
 	}
    *posargc = argc - optind;
