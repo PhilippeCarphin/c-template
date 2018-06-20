@@ -17,6 +17,13 @@ int product_int(struct MyOpts *opts){return -1;}
 int sum(struct MyOpts *opts);
 int sum_int(struct MyOpts *opts){return -1;}
 int sum_float(struct MyOpts *opts){return -1;}
+
+/*
+ * Entry point of your API, treat this like the regular main() function except
+ * that it receives a struct MyOpts *opts.  So this whole thing exists only to
+ * provide a wrapper around your program so that you can pretend that the command
+ * line passed you a struct MyOpts* instead of int argc, char *argv[].
+ */
 int my_main(struct MyOpts *opts)
 {
    switch(opts->cmd){
