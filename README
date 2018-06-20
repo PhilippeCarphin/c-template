@@ -7,3 +7,73 @@ Third, Complete the TODO's in options.c
 Fourth Implement your API in myapi.c and add source files.
 
 NOTE: You do not touch main.c, options.h
+
+EXAMPLE:
+
+  I have a program that takes a list of numbers, (floats or ints) and
+  calculates the sum or the product.  So I make my struct
+  
+  enum Command { SUM, PRODUCT};
+  enum Type { INTEGER, FLOATING };
+  struct MyOpts {
+     enum Command cmd;
+     char *a_path;
+     enum Type type;
+     int nb_elements;
+     float *float_elements;
+     int *int_elements;
+  };
+  
+  and I edit my functions to take this struct as a parameter.
+  Something like this:
+  
+    int sum(struct MyOpts *opts){
+       int int_sum = 0;
+       float float_sum = 0;
+       switch(opts->type){
+          case INTEGER:
+             for(int i = 0; i < opts->nb_elements; i++){
+                int_sum += opts->int_elements[i];
+             }
+             printf("SUM IS %d\n", int_sum);
+             return 0;
+          case FLOATING:
+             for(int i = 0; i < opts->nb_elements; i++){
+                float_sum += opts->float_elements[i];
+             }
+             printf("SUM IS %f\n", float_sum);
+             return 0;
+          default:
+             return -1;
+       }
+    };
+    
+  For the command line option parsing to work, it needs to reflect
+  the struct and command line api.
+  
+    static struct option options[] = {
+      // long name | has_args | flag | short name
+      { "help",         0,        0,      'h'},
+      { "type",         1,        0,      't'},
+      {0,0,0,0}
+    };
+    static char *short_opts = "ht:";
+    
+ And complete the cases in the parse_option() function.
+ 
+ The parse_posargs is called after all the options have been treated.
+ Here you do whatever you want.  For me, the first one is "sum" or
+ "product" which I use to set opts->cmd, and the remaining ones are
+ transformed into either floats or ints and they are used to set
+ opts->nb_elements and either opts->int_elements or opts->float_elements.
+ 
+ It is common to want to turn string values into enums and I have 
+ provided an example of a nice way of doing this in the command() function
+ which takes "sum"|"product" to the enum constants SUM|PRODUCT.
+ 
+ Once all this is done, you AUTOMATICALLY get a TCL extension and a Python
+ extension!
+
+Because I have good error reporting (All functions return -1 if they fail
+to complete their tasks) any error will bubble up to main and terminate
+the program right away with some equivalent of a stack trace.
