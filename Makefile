@@ -3,19 +3,20 @@ src_dir=.
 build_dir=.
 inc_dir=.
 
-# FILENAME LISTS
-src = $(wildcard $(src_dir)/*.c)
-obj = $(subst $(src_dir),$(build_dir),$(src:.c=.o))
-main_obj = $(src_dir)/main.o $(src_dir)/tcl_extension.o
-shared_obj = $(filter-out $(main_obj),$(obj))
-
 # TARGETS
-trg=exec
+trg=a.out
 shared_lib = libmyapi.$(lib_extension)
 tcl_shared_lib=libtclmyapi.$(lib_extension)
 
+# FILENAME LISTS
+src = $(wildcard $(src_dir)/*.c)
+obj = $(subst $(src_dir),$(build_dir),$(src:.c=.o))
+main_obj = $(src_dir)/main.o
+ext_obj = $(src_dir)/tcl_extension.o $(src_dir)/py_extension.o
+shared_obj = $(filter-out $(main_obj) $(ext_obj),$(obj))
+
 # COMPILATION AND LINKING FLAGS
-CFLAGS= -g -Wall -MMD -I $(inc_dir) -fPIC -std=c11 -Wno-unused-function
+CFLAGS= -g -Wall -MMD -I $(inc_dir) -fPIC -std=c11 -Wno-unused-function -I /usr/include/python3.6m/
 LDLIBS=-L$(tcl_lib) -l tclstub8.6
 
 # TCL shared library variables
@@ -35,21 +36,22 @@ else
 	TCL_CFLAGS += -I /usr/include/tcl8.6
 endif
 
+.PHONY:pylib
+all: lib libtcl pylib exec
 
-all: lib libtcl exec
+lib:$(shared_lib)
+libtcl:$(tcl_shared_lib)
+pylib:$(src) setup.py
+
 $(trg): main.c $(shared_obj)
 	gcc -o $(trg) $< $(shared_obj)
 
 $(obj): $(build_dir)/%.o : $(src_dir)/%.c
 	gcc $(CFLAGS) -c $< -o $@
 
-# C-shared library with options.o and myapi.o
-lib:$(shared_lib)
 $(shared_lib): $(shared_obj)
 	gcc $(LDFLAGS) -o $@ $^
 #
-# TCL-shared library with options.o, myapi.o, tcl_extension.o
-libtcl:$(tcl_shared_lib)
 $(tcl_shared_lib):tcl_extension.c $(shared_obj)
 	gcc $(TCL_LDFLAGS) $(TCL_CFLAGS) $< $(shared_obj) $(TCL_LIBS) -o $@
 
