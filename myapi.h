@@ -1,5 +1,8 @@
 #ifndef _MY_API_H_
 #define _MY_API_H_
+/*
+** TODO Write this struct to reflect what information could be passed from the command line
+*/
 struct MyOpts;
 int my_main(struct MyOpts *opts);
 enum Command { SUM, PRODUCT};

@@ -1,0 +1,33 @@
+* Adapting the template
+
+** TODO First define your api
+
+   With a defined api, the =struct MyOpts= can be written (see [[file:myapi.h::**%20TODO%20Write%20this%20struct%20to%20reflect%20what%20information%20could%20be%20passed%20from%20the%20command%20line][myapi.h]]).   
+
+** TODO Parsing the arguments.
+
+   We will implement the function
+
+   =int parse_args(int argc, char *argv[], struct MyOpts **opts);=
+
+   That takes the command line arguments and returns the address of an allocated
+   and filled in instance of =struct MyOpts=.
+
+*** TODO Define how the command line will pass that information
+    - [ ] Complete the array of =struct option= (in [[*First define your api][option.c]])
+    - [ ] Complete the string defining short options (in [[file:options.c:://%20TODO%20:%20COMPLETE%20THIS%20(a%20colon%20after%20means%20it%20takes%20an%20argument)][option.c]]).
+
+*** TODO Complete functions for dealing with that info
+  - [ ] Complete the cases of the =parse_option()= function (in [[file:options.c:://%20TODO%20:%20COMPLETE%20THIS][option.c]])
+  - [ ] Implement the =parse_posargs()= function (in [[file:options.c:://%20TODO%20:%20COMPLETE%20THIS][options.c]]).
+    Do whatever you want with =posargc, posargv[]=. You can completely clean out
+    this function.
+  - Note : [[file:options.c::struct%20NameValue%20{const%20char%20*name;%20const%20int%20value;};//%20Library][This]] scheme for a lookup table for names and enums.
+   
+** TODO Implement your api
+
+   A function that takes a =struct MyOpts= and makes the appropriate function calls
+   to fulfill the command.
+
+   For example in [[file:myapi.c::int%20my_main(struct%20MyOpts%20*opts)][myapi.c]].
+

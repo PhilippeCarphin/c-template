@@ -10,16 +10,17 @@
 #include <stdio.h>
 
 #include "myapi.h"
+
 /*
  * Here we are implementing the parse_args() function.  To do this, only a
  */
+
 /*
  * couple of building blocks are necessary:
  * 1) Complete the struct option array, the short_opts string, and the
  * parse_option() funciton.
  * 2) Implement the parse_posargs function. 
  */
-
 /*******************************************************************************
  * Option specififcation passed to getopt_long to specify the names and types of
  * your command line options
