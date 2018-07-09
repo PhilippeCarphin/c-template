@@ -12,11 +12,11 @@
 int first_subroutine(struct MyOpts *opts);
 int second_subroutine(struct MyOpts *opts);
 int product(struct MyOpts *opts);
-int product_float(struct MyOpts *opts){return -1;}
-int product_int(struct MyOpts *opts){return -1;}
+int product_float(struct MyOpts *opts){(void) opts; return -1;}
+int product_int(struct MyOpts *opts){(void) opts; return -1;}
 int sum(struct MyOpts *opts);
-int sum_int(struct MyOpts *opts){return -1;}
-int sum_float(struct MyOpts *opts){return -1;}
+int sum_int(struct MyOpts *opts){(void) opts; return -1;}
+int sum_float(struct MyOpts *opts){(void) opts; return -1;}
 
 /*
  * Entry point of your API, treat this like the regular main() function except
