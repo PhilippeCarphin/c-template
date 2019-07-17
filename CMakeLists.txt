@@ -1,10 +1,10 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 2.8)
 project(c_template C)
 
 set(CMAKE_C_STANDARD 11)
 
 find_package(PythonLibs 3 REQUIRED)
-find_package(Tcl REQUIRED)
+find_package(Tcl)
 
 include_directories(.)
 
@@ -34,7 +34,7 @@ add_dependencies(check-main
 
  add_custom_target(check-py
    COMMAND
-   PYTHONPATH=${CMAKE_SOURCE_DIR} python3 ${CMAKE_SOURCE_DIR}/test_py_extension.py
+   PYTHONPATH=${CMAKE_BINARY_DIR} python3 ${CMAKE_SOURCE_DIR}/test_py_extension.py
  )
 
  add_dependencies(check-py myModule)
