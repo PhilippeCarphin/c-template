@@ -5,3 +5,4 @@ exec
 *.dylib
 *.dSYM
 template.html
+cmake-build-debug

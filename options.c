@@ -107,6 +107,7 @@ static int parse_posargs(int posargc, char *posargv[], struct MyOpts *opts)
             }
             break;
          default:
+                 DBG_PRINT("=============== Default of switch \n");
             return -1;
       }
    }
