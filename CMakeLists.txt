@@ -16,9 +16,9 @@ target_link_libraries(myApi PUBLIC options)
 add_executable(c_template main.c)
 target_link_libraries(c_template PRIVATE myApi)
 
-add_library(tcl-ext SHARED tcl_extension.c)
-target_link_libraries(tcl-ext PRIVATE ${TCL_LIBRARY} myApi)
-# target_include_directories(tcl-ext PRIVATE ${TCL_INCLUDE_PATH})
+add_library(tclmyapi SHARED tcl_extension.c)
+target_link_libraries(tclmyapi PRIVATE ${TCL_LIBRARY} myApi)
+# target_include_directories(tclmyapi PRIVATE ${TCL_INCLUDE_PATH})
 
 python_add_module(myModule py_extension.c)
 target_include_directories(myModule PUBLIC ${PYTHON_INCLUDE_DIRS})
@@ -28,6 +28,11 @@ add_custom_target(check-main
    COMMAND
    ${CMAKE_BINARY_DIR}/c_template sum -t float 1 2 3 4 5 6 7
    )
+
+ add_custom_target(check-tcl
+   COMMAND
+   ${CMAKE_SOURCE_DIR}/test.tcl)
+ add_dependencies(check-tcl tclmyapi)
 
 add_dependencies(check-main
    c_template)
@@ -40,4 +45,4 @@ add_dependencies(check-main
  add_dependencies(check-py myModule)
 
  add_custom_target(check)
- add_dependencies(check check-py check-main)
+ add_dependencies(check check-py check-main check-tcl)
