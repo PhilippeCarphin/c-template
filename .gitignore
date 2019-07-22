@@ -6,3 +6,4 @@ exec
 *.dSYM
 template.html
 cmake-build-debug
+a.out
